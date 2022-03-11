@@ -1,0 +1,4 @@
+.idea\
+.CodeWars_Kotlin.iml
+# Project exclude paths
+/out/

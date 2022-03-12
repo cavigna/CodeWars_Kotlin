@@ -253,7 +253,7 @@ fun longest(s1: String, s2: String): String = (s1 + s2).toSet().toCharArray().so
 You can assume all values in the array are numbers.
  */
 
-fun smallEnough(a : IntArray, limit : Int) : Boolean = a.none { it > limit }
+fun smallEnough(a: IntArray, limit: Int): Boolean = a.none { it > limit }
 
 /**
  * Cat and Mouse - Easy Version
@@ -272,7 +272,7 @@ fun catMouse(s: String): String {
     val puntitos = s.count { it.toString() == "." }
 
     return when {
-        puntitos <= 3 ->   "Caught!"
+        puntitos <= 3 -> "Caught!"
         else -> "Escaped!"
     }
 }
@@ -293,10 +293,68 @@ Examples
 ...because there are 2 pairs: 2 and 5
 
 [1, 2, 2, 20, 6, 20, 2, 6, 2]  -->  4
+
+https://www.codewars.com/kata/5c55ad8c9d76d41a62b4ede3/train/kotlin
  */
 
 fun duplicates(array: IntArray): Int {
-    val frequency = array.toList().groupingBy { it }.eachCount().filterValues { it>1 }
+    val frequency = array.toList().groupingBy { it }.eachCount().filterValues { it > 1 }
 
     return 0 // Make the magic happen
 }
+
+fun lala(l: List<Int>) {
+    val listado = listOf(1, 2, 5, 6, 5, 2)
+    val freq = l.groupingBy { it }.eachCount().filterValues { it > 1 }
+    var pares = 0
+    var valor: Int
+
+    freq.forEach { (k, v) ->
+        print("Key: $k")
+        print(" Value: $v ")
+        println()
+        valor = v
+
+        while (valor >= 2) {
+            println("Valor = $valor")
+            println("Pares = $pares")
+            pares += 1
+            valor /= 2
+
+
+        }
+
+    }
+
+
+
+    println(freq)
+    println("Pares = $pares")
+}
+
+
+/**
+ * Mumbling
+ * This time no story, no theory. The examples below show you how to write function accum:
+
+Examples:
+accum("abcd") -> "A-Bb-Ccc-Dddd"
+accum("RqaEzty") -> "R-Qq-Aaa-Eeee-Zzzzz-Tttttt-Yyyyyyy"
+accum("cwAt") -> "C-Ww-Aaa-Tttt"
+The parameter of accum is a string which includes only letters from a..z and A..Z.
+
+https://www.codewars.com/kata/5667e8f4e3f572a8f2000039/train/kotlin
+ */
+
+fun accum(s: String): String {
+    val m = mutableListOf<String>()
+
+    s.map { it.toString().toLowerCase() }.forEachIndexed { index, s ->
+        m.add(s.repeat(index + 1).capitalize())
+    }
+
+    return m.joinToString("-")
+}
+
+// shorter ==> fun accum(s:String):String = s.mapIndexed { index, char -> char.toUpperCase() + char.toString().toLowerCase().repeat(index) }.joinToString("-")
+

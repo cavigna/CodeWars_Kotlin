@@ -358,3 +358,76 @@ fun accum(s: String): String {
 
 // shorter ==> fun accum(s:String):String = s.mapIndexed { index, char -> char.toUpperCase() + char.toString().toLowerCase().repeat(index) }.joinToString("-")
 
+/** Maximum Length Difference
+
+ *
+ * You are given two arrays a1 and a2 of strings. Each string is composed with letters from a to z. Let x be any string in the first array and y be any string in the second array.
+
+Find max(abs(length(x) − length(y)))
+
+If a1 and/or a2 are empty return -1 in each language except in Haskell (F#) where you will return Nothing (None).
+
+Example:
+a1 = ["hoqq", "bbllkw", "oox", "ejjuyyy", "plmiis", "xxxzgpsssa", "xxwwkktt", "znnnnfqknaz", "qqquuhii", "dvvvwz"]
+a2 = ["cccooommaaqqoxii", "gggqaffhhh", "tttoowwwmmww"]
+mxdiflg(a1, a2) --> 13
+Bash note:
+input : 2 strings with substrings separated by ,
+output: number as a string
+ */
+
+fun mxdiflg(a1:Array<String>, a2:Array<String>):Int {
+    var l1 =a1.maxOf {it.length}
+    var l2 =a2.maxOf {it.length}
+
+println(l1-l2)
+
+    return -1
+}
+
+/**
+ * Rotate for a Max
+ * Let us begin with an example:
+
+Take a number: 56789. Rotate left, you get 67895.
+
+Keep the first digit in place and rotate left the other digits: 68957.
+
+Keep the first two digits in place and rotate the other ones: 68579.
+
+Keep the first three digits and rotate left the rest: 68597. Now it is over since keeping the first four it remains only one digit which rotated is itself.
+
+You have the following sequence of numbers:
+
+56789 -> 67895 -> 68957 -> 68579 -> 68597
+
+and you must return the greatest: 68957.
+
+Task
+Write function max_rot(n) which given a positive integer n returns the maximum number you got doing rotations similar to the above example.
+
+So max_rot (or maxRot or ... depending on the language) is such as:
+
+max_rot(56789) should return 68957
+
+max_rot(38458215) should return 85821534
+
+https://www.codewars.com/kata/56a4872cbb65f3a610000026/train/kotlin
+ */
+fun maxRot(n:Long):Long {
+    val l = n.toString().map { it.toString() }.toMutableList()
+    val listadoResultados = mutableListOf<Long>()
+    listadoResultados.add(l.joinToString("").toLong())
+
+    for(i in 0 until l.size-1){
+        l.add(l[i])
+        l.removeAt(i)
+        listadoResultados.add(l.joinToString("").toLong())
+    }
+
+    return listadoResultados.maxOf { it }
+}
+
+fun main(){
+    maxRot(56789)
+}

@@ -858,7 +858,7 @@ https://www.codewars.com/kata/5a3fe3dde1ce0e8ed6000097/kotlin
 fun century(number: Int): Int = ceil((number.toDouble()/100)).toInt()
 
 // clever?? ==> fun century(number: Int) = (number +99) / 100
-Century From Year
+
 
 
 fun main() {

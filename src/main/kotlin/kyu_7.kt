@@ -1,4 +1,6 @@
 import java.util.*
+import kotlin.math.ceil
+import kotlin.math.roundToInt
 import kotlin.math.sqrt
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -835,10 +837,34 @@ fun replace(s: String): String = s.replace("a", "!", ignoreCase = true)
     .replace("o", "!", ignoreCase = true)
     .replace("u", "!", ignoreCase = true)
 
+/**
+ * Century From Year
+ *
+ * Introduction
+The first century spans from the year 1 up to and including the year 100, the second century - from the year 101 up to and including the year 200, etc.
+
+Task
+Given a year, return the century it is in.
+
+Examples
+1705 --> 18
+1900 --> 19
+1601 --> 17
+2000 --> 20
+
+https://www.codewars.com/kata/5a3fe3dde1ce0e8ed6000097/kotlin
+ */
+
+fun century(number: Int): Int = ceil((number.toDouble()/100)).toInt()
+
+// clever?? ==> fun century(number: Int) = (number +99) / 100
+Century From Year
+
 
 fun main() {
-    assertEquals("H!!", replace("Hi!"));
-    assertEquals("!H!! H!!", replace("!Hi! Hi!"));
-    assertEquals("!!!!!", replace("aeiou"));
-    assertEquals("!BCD!", replace("ABCDE"));
+    assertEquals(18, century(1705));
+    assertEquals(19, century(1900));
+    assertEquals(17, century(1601));
+    assertEquals(20, century(2000));
+    assertEquals(1,  century(89));
 }

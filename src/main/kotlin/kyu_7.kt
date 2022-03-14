@@ -1,6 +1,8 @@
 import java.util.*
 import kotlin.math.sqrt
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 fun evaporator(content: Double, evap_per_day: Double, threshold: Double): Int {
     var days = 0
@@ -587,8 +589,180 @@ fun alphaSeq(str: String): String {
 }
 // shorter ==>fun alphaSeq(str: String) = str.toLowerCase().toCharArray().sorted().joinToString(",") { it.toString().repeat(it.toInt() - 96).capitalize() }
 
+/**
+ * Given an array of strings, reverse them and their order in such way that their length stays the same as the length of the original inputs.
+
+Example:
+Input:  {"I", "like", "big", "butts", "and", "I", "cannot", "lie!"}
+Output: {"!", "eilt", "onn", "acIdn", "ast", "t", "ubgibe", "kilI"}
+
+// No Kotlin coder would ever use Arrays if they could avoid it,
+// even in a challenge called "Ultimate Array Reverser."
+// To paraphrase a man in a cave,
+// "It's dangerous to go alone, take this [List]"
+
+https://www.codewars.com/kata/5c3433a4d828182e420f4197/train/kotlin
+ */
+
+fun reverse(a: List<String>): List<String> {
+     var alvere  = a.joinToString("").reversed()
+    val dadoVuelta = mutableListOf<String>()
+
+    a.forEach {
+        dadoVuelta.add(alvere.substring(0, it.length))
+        alvere = alvere.drop(it.length)
+    }
+    println(dadoVuelta)
+
+
+    return dadoVuelta
+}
+
+
+
+/**
+ * Circular List
+
+ * Create a Circular List
+
+A circular list is of finite size, but can infititely be asked for its previous and next elements. This is because it acts like it is joined at the ends and loops around.
+
+For example, imagine a CircularList of [1, 2, 3, 4]. Five invocations of next() in a row should return 1, 2, 3, 4 and then 1 again. At this point, five invocations of prev() in a row should return 4, 3, 2, 1 and then 4 again.
+
+Your CircularList is created by passing a vargargs parameter in, e.g. new CircularList(1, 2, 3). Your list constructor/init code should throw an Exception if nothing is passed in.
+class CircularList<T>(vararg val elements: T) {
+fun next(): T {
+// your code here
+}
+
+fun prev(): T {
+// your code here
+}
+}
+https://www.codewars.com/kata/5b2e60742ae7543f9d00005d/train/kotlin
+
+ */
+
+
+class CircularList<T>(vararg val elements: T) {
+   private val listIterator = elements.toList().listIterator()
+    private var currentPos = 0
+    private var current = elements[currentPos]
+
+    private var anteriorPos = elements.size -1
+    private var anterior = elements[elements.size-1]
+
+    fun next(): T {
+
+        if (currentPos>=  elements.size -1){
+            currentPos = 0
+            current = elements[currentPos]
+
+            return current
+        }else{
+            currentPos +=1
+            return elements[currentPos-1]
+
+        }
+    }
+
+    fun prev(): T {
+//        if (anteriorPos == elements.size-1){
+//            anteriorPos -=1
+//            return elements[elements.size -1]
+//        }
+
+         if (anteriorPos<= elements.size-1){
+            anteriorPos = if (anteriorPos > elements.size-1) -1 else elements.size -1
+            return elements[anteriorPos]
+        }
+        else{
+            anteriorPos = elements.size-1
+            anterior = elements[anteriorPos]
+            return anterior
+        }
+
+/*
+    val xs = CircularList<String>("one", "two", "three")
+    println("${xs.next()} ==> one")
+    println("${xs.next()} ==> two")
+    println("${xs.next()} ==> three")
+    println("${xs.next()} ==> one")
+    println("${xs.prev()} ==> three")
+    println("${xs.prev()} ==> two")
+    println("${xs.prev()} ==> one")
+    println("${xs.prev()} ==> three")
+
+
+    val ys = CircularList<Int>(1, 2, 3, 4, 5)
+    println("${ys.prev()}, `is`(5)")
+    println("${ys.prev()}, `is`(4)")
+    println("${ys.next()}, `is`(5)")
+    println("${ys.next()}, `is`(1)")
+    println("${ys.next()}, `is`(2)")
+    println("${ys.next()}, `is`(3)")
+    println("${ys.next()}, `is`(4)")
+    println("${ys.prev()}, `is`(3)")
+    println("${ys.prev()}, `is`(2)")
+    println("${ys.next()}, `is`(3)")
+    println("${ys.next()}, `is`(4)")
+    println("${ys.next()}, `is`(5)")
+    println("${ys.next()}, `is`(1)")
+    println("${ys.next()}, `is`(2)")
+    println("${ys.next()}, `is`(3)")
+ */
+/*
+class CircularList<T>(vararg val elements: T) {
+   private val listIterator = elements.toList().listIterator()
+    private var current = elements[0]
+    private var currentPos = 0
+    private var anteriorPos = elements.size -1
+    private var anterior = elements[elements.size-1]
+
+    fun next(): T {
+
+        if (listIterator.hasNext()) {
+            current = listIterator.next()
+            return current
+        }else{
+            return elements[0]
+        }
+    }
+
+    fun prev(): T {
+
+        if (listIterator.hasPrevious()) {
+            return listIterator.previous()
+        }else{
+            return elements[elements.size-1]
+        }
+    }
+}
+ */
+    }
+}
+
+
+/**
+ * Opposites Attract
+
+ * Timmy & Sarah think they are in love, but around where they live, they will only know once they pick a flower each. If one of the flowers has an even number of petals and the other has an odd number of petals it means they are in love.
+
+Write a function that will take the number of petals of each flower and return true if they are in love and false if they aren't.
+
+https://www.codewars.com/kata/555086d53eac039a2a000083/train/kotlin
+ *
+ */
+fun loveFun(flowerA: Int, flowerB: Int): Boolean {
+    return  (flowerA%2 ==0 && flowerB%2 !=0) || (flowerA%2 !=0 && flowerB%2 ==0)
+}
+
 fun main() {
+
+    assertTrue(loveFun(1, 4))
+    assertFalse(loveFun(2, 2))
+    assertTrue(loveFun(0, 1))
+    assertFalse(loveFun(0, 0))
 
 
 }
-

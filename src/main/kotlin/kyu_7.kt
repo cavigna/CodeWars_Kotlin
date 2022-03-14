@@ -605,7 +605,7 @@ https://www.codewars.com/kata/5c3433a4d828182e420f4197/train/kotlin
  */
 
 fun reverse(a: List<String>): List<String> {
-     var alvere  = a.joinToString("").reversed()
+    var alvere = a.joinToString("").reversed()
     val dadoVuelta = mutableListOf<String>()
 
     a.forEach {
@@ -617,7 +617,6 @@ fun reverse(a: List<String>): List<String> {
 
     return dadoVuelta
 }
-
 
 
 /**
@@ -645,23 +644,23 @@ https://www.codewars.com/kata/5b2e60742ae7543f9d00005d/train/kotlin
 
 
 class CircularList<T>(vararg val elements: T) {
-   private val listIterator = elements.toList().listIterator()
+    private val listIterator = elements.toList().listIterator()
     private var currentPos = 0
     private var current = elements[currentPos]
 
-    private var anteriorPos = elements.size -1
-    private var anterior = elements[elements.size-1]
+    private var anteriorPos = elements.size - 1
+    private var anterior = elements[elements.size - 1]
 
     fun next(): T {
 
-        if (currentPos>=  elements.size -1){
+        if (currentPos >= elements.size - 1) {
             currentPos = 0
             current = elements[currentPos]
 
             return current
-        }else{
-            currentPos +=1
-            return elements[currentPos-1]
+        } else {
+            currentPos += 1
+            return elements[currentPos - 1]
 
         }
     }
@@ -672,12 +671,11 @@ class CircularList<T>(vararg val elements: T) {
 //            return elements[elements.size -1]
 //        }
 
-         if (anteriorPos<= elements.size-1){
-            anteriorPos = if (anteriorPos > elements.size-1) -1 else elements.size -1
+        if (anteriorPos <= elements.size - 1) {
+            anteriorPos = if (anteriorPos > elements.size - 1) -1 else elements.size - 1
             return elements[anteriorPos]
-        }
-        else{
-            anteriorPos = elements.size-1
+        } else {
+            anteriorPos = elements.size - 1
             anterior = elements[anteriorPos]
             return anterior
         }
@@ -754,7 +752,7 @@ https://www.codewars.com/kata/555086d53eac039a2a000083/train/kotlin
  *
  */
 fun loveFun(flowerA: Int, flowerB: Int): Boolean {
-    return  (flowerA%2 ==0 && flowerB%2 !=0) || (flowerA%2 !=0 && flowerB%2 ==0)
+    return (flowerA % 2 == 0 && flowerB % 2 != 0) || (flowerA % 2 != 0 && flowerB % 2 == 0)
 }
 
 /**
@@ -776,22 +774,50 @@ https://www.codewars.com/kata/5648b12ce68d9daa6b000099/train/kotlin
 
  */
 // clever ==> fun people(busStops: Array<Pair<Int, Int>>) = busStops.sumBy { it.first - it.second }
-fun people(busStops: Array<Pair<Int, Int>>) : Int {
-var numberPassangers = 0
+fun people(busStops: Array<Pair<Int, Int>>): Int {
+    var numberPassangers = 0
     busStops.forEach {
         numberPassangers += it.first
         numberPassangers -= it.second
     }
-    return if (numberPassangers <=0) 0 else numberPassangers
+    return if (numberPassangers <= 0) 0 else numberPassangers
 }
 
+/** The Office I - Outed
+
+ * Your colleagues have been looking over you shoulder. When you should have been doing your boring real job, you've been using the work computers to smash in endless hours of codewars.
+
+In a team meeting, a terrible, awful person declares to the group that you aren't working. You're in trouble. You quickly have to gauge the feeling in the room to decide whether or not you should gather your things and leave.
+
+Given an object (meet) containing team member names as keys, and their happiness rating out of 10 as the value, you need to assess the overall happiness rating of the group. If <= 5, return 'Get Out Now!'. Else return 'Nice Work Champ!'.
+
+Happiness rating will be total score / number of people in the room.
+
+Note that your boss is in the room (boss), their score is worth double it's face value (but they are still just one person!).
+
+The Office II - Boredom Score
+The Office III - Broken Photocopier
+The Office IV - Find a Meeting Room
+The Office V - Find a Chair
+https://www.codewars.com/kata/57ecf6efc7fe13eb070000e1/train/kotlin
+ */
+
+
+fun outed(meet: Map<String, Int>, boss: String): String {
+    var happines = 0
+    meet.forEach {
+        happines += when (it.key) {
+            boss -> (it.value) * 2
+            else -> it.value
+        }
+    }
+    return when {
+        happines / meet.size <= 5 -> "Get Out Now!"
+        else -> "Nice Work Champ!"
+    }
+}
 
 fun main() {
-
-    assertEquals(17, people(arrayOf(3 to 0,9 to 1,4 to 10,12 to 2,6 to 1,7 to 10)))
-    assertEquals(21, people(arrayOf(3 to 0,9 to 1,4 to 8,12 to 2,6 to 1,7 to 8)))
-    assertEquals(5, people(arrayOf(10 to 0,3 to 5,5 to 8)))
-
 
 
 }

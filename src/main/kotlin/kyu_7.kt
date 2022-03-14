@@ -1,3 +1,5 @@
+import kotlin.test.assertEquals
+
 fun evaporator(content: Double, evap_per_day: Double, threshold: Double): Int {
     var days = 0
     var percentage = 100.0
@@ -376,11 +378,11 @@ input : 2 strings with substrings separated by ,
 output: number as a string
  */
 
-fun mxdiflg(a1:Array<String>, a2:Array<String>):Int {
-    var l1 =a1.maxOf {it.length}
-    var l2 =a2.maxOf {it.length}
+fun mxdiflg(a1: Array<String>, a2: Array<String>): Int {
+    var l1 = a1.maxOf { it.length }
+    var l2 = a2.maxOf { it.length }
 
-println(l1-l2)
+    println(l1 - l2)
 
     return -1
 }
@@ -414,12 +416,12 @@ max_rot(38458215) should return 85821534
 
 https://www.codewars.com/kata/56a4872cbb65f3a610000026/train/kotlin
  */
-fun maxRot(n:Long):Long {
+fun maxRot(n: Long): Long {
     val l = n.toString().map { it.toString() }.toMutableList()
     val listadoResultados = mutableListOf<Long>()
     listadoResultados.add(l.joinToString("").toLong())
 
-    for(i in 0 until l.size-1){
+    for (i in 0 until l.size - 1) {
         l.add(l[i])
         l.removeAt(i)
         listadoResultados.add(l.joinToString("").toLong())
@@ -428,6 +430,38 @@ fun maxRot(n:Long):Long {
     return listadoResultados.maxOf { it }
 }
 
-fun main(){
-    maxRot(56789)
+
+/**
+ *Hide password from jdbc url
+ * We have to create a function that receives a connection string with password included and you have to mask the password i.e. change password by asterisks.
+
+Preconditions:
+
+non empty valid url
+password always next to string section password=
+assume password will not contain ampersand sign for sake of simplicity
+to make it more real it has non ASCII characters
+"password=" and "user" will occur only once
+empty passwords are not validated but best solutions take empty passwords into account
+https://www.codewars.com/kata/5a726f16373c2ee6c60000db/train/kotlin
+ *
+ */
+
+fun hidePasswordFromConnection(urlString: String): String {
+    val pass = urlString.substringAfter("password=").substringBefore("&")
+
+    return when {
+        pass.isNotBlank() -> {
+            val asterisco = "*".repeat(pass.length)
+            urlString.replace(pass, asterisco)
+        }
+        else -> urlString
+    }
+}
+
+fun main() {
+    assertEquals(
+        "jdbc:mysql://sdasdasdasd:szdasdasd:dfsdfsdfsdf/sdfsdfsdf?user=root&password=*****",
+        hidePasswordFromConnection("jdbc:mysql://sdasdasdasd:szdasdasd:dfsdfsdfsdf/sdfsdfsdf?user=root&password=12345")
+    )
 }

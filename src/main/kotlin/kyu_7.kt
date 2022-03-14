@@ -1,4 +1,6 @@
+import java.util.*
 import kotlin.math.sqrt
+import kotlin.test.assertEquals
 
 fun evaporator(content: Double, evap_per_day: Double, threshold: Double): Int {
     var days = 0
@@ -460,7 +462,6 @@ fun hidePasswordFromConnection(urlString: String): String {
 }
 
 
-
 /**
  *Predict your age!
 
@@ -481,13 +482,13 @@ Note: the result should be rounded down to the nearest integer.
 
 //shorter ==> fun predictAge(vararg age:Int) = (Math.sqrt((age.map{it*it}.sum().toDouble()))/2).toInt()
 
-fun predictAge(age1: Int, age2: Int, age3: Int, age4: Int, age5: Int, age6: Int, age7: Int, age8: Int): Int{
+fun predictAge(age1: Int, age2: Int, age3: Int, age4: Int, age5: Int, age6: Int, age7: Int, age8: Int): Int {
     val edades = mutableListOf(age1, age2, age3, age4, age5, age6, age7, age8)
     edades.forEachIndexed { index, i ->
         edades[index] *= i
     }
-    println((sqrt(edades.sum().toDouble())/2).toInt())
-    return (sqrt(edades.sum().toDouble())/2).toInt()
+    println((sqrt(edades.sum().toDouble()) / 2).toInt())
+    return (sqrt(edades.sum().toDouble()) / 2).toInt()
 }
 
 /**
@@ -547,7 +548,7 @@ s contains only digits, "+" and "=", "-","*" or "/" will not appear in the strin
 Happy Coding ^_^
  */
 
- // shorter ==> fun isTuringEquation(s: String): Boolean = s.split('+', '=').map { it.reversed().toInt() }.let { it[0] + it[1] == it[2] }
+// shorter ==> fun isTuringEquation(s: String): Boolean = s.split('+', '=').map { it.reversed().toInt() }.let { it[0] + it[1] == it[2] }
 
 fun isTuringEquation(s: String): Boolean {
 
@@ -558,9 +559,36 @@ fun isTuringEquation(s: String): Boolean {
     return (primerNumero + segundoNumero) == resultado
 }
 
+/**  Alphabetical Sequence
+ *
+ *
+ * In this kata you will be given a random string of letters and tasked with returning them as a string of comma-separated sequences sorted alphabetically, with each sequence starting with an uppercase character followed by n-1 lowercase characters, where n is the letter's alphabet position 1-26.
+
+Example
+alphaSeq("ZpglnRxqenU") -> "Eeeee,Ggggggg,Llllllllllll,Nnnnnnnnnnnnnn,Nnnnnnnnnnnnnn,Pppppppppppppppp,Qqqqqqqqqqqqqqqqq,Rrrrrrrrrrrrrrrrrr,Uuuuuuuuuuuuuuuuuuuuu,Xxxxxxxxxxxxxxxxxxxxxxxx,Zzzzzzzzzzzzzzzzzzzzzzzzzz"
+Technical Details
+The string will include only letters.
+The first letter of each sequence is uppercase followed by n-1 lowercase.
+Each sequence is separated with a comma.
+Return value needs to be a string.
+
+https://www.codewars.com/kata/5bd00c99dbc73908bb00057a/train/kotlin
+
+
+ */
+
+fun alphaSeq(str: String): String {
+    val listaString = mutableListOf<String>()
+    str.lowercase(Locale.getDefault()).forEach {
+        listaString.add(it.toString().repeat(it.code - 97 + 1).capitalize())
+        listaString.sort()
+    }
+    return listaString.joinToString(",")
+}
+// shorter ==>fun alphaSeq(str: String) = str.toLowerCase().toCharArray().sorted().joinToString(",") { it.toString().repeat(it.toInt() - 96).capitalize() }
+
 fun main() {
-    isTuringEquation("000002913+0000037048=0000039961")
-    isTuringEquation("0000015204+0000017105=0000032309")
+
 
 }
 

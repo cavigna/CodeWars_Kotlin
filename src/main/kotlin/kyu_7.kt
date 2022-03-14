@@ -1,5 +1,4 @@
 import kotlin.math.sqrt
-import kotlin.test.assertEquals
 
 fun evaporator(content: Double, evap_per_day: Double, threshold: Double): Int {
     var days = 0
@@ -491,7 +490,77 @@ fun predictAge(age1: Int, age2: Int, age3: Int, age4: Int, age5: Int, age6: Int,
     return (sqrt(edades.sum().toDouble())/2).toInt()
 }
 
-fun main() {
-    assertEquals(86, predictAge(65, 60, 75, 55, 60, 63, 64, 45))
-    assertEquals(79, predictAge(32, 54, 76, 65, 34, 63, 64, 45))
+/**
+ * Simple Fun #384: Is Turing's Equation?
+ * https://www.codewars.com/kata/5a1e6323ffe75f71ae000026/train/kotlin
+ * Story
+Joe Stoy, in his book "Denotational Semantics", tells following story:
+
+The decision which way round the digits run is, of course, mathematically trivial.
+Indeed, one early British computer had numbers running from right to left (because
+the spot on an oscilloscope tube runs from left to right, but in serial logic the
+least significant digits are dealt with first).
+
+Turing used to mystify audiences at public lectures when, quite by accident, he would
+slip into this mode even for decimal arithmetic, and write things like 73+42=16.
+
+The next version of the machine was made more conventional simply by crossing the
+x-deflection wires: this, however, worried the engineers, whose waveforms were all
+backwards. That problem was in turn solved by providing a little window so that the
+engineers(who tended to be behind the computer anyway) could view the oscilloscope
+screen from the back.
+
+[C. Strachey - private communication.]
+You will play the role of the audience and judge on the truth value of Turing's equations.
+
+Task
+You are given a string s. It's an equation such as "a+b=c", where a, b, c are numbers made up of the digits 0 to 9. This includes possible leading or trailing zeros. The equations will not contain any spaces.
+
+Your task is to determine whether s is a valid Turing equation. Return true or false, respectively, in Turing's interpretation, i.e. the numbers being read backwards.
+
+Still struggling to understand the task? Look at the following examples ;-)
+
+Examples
+For s = "73+42=16", the output should be true.
+
+73 -> 37
+42 -> 24
+16 -> 61
+37+24==61
+For s = "5+8=13", the output should be false.
+
+5 -> 5
+8 -> 8
+13 -> 31
+5+8!=31
+For s = "10+20=30", the output should be true.
+
+10 -> 01 -> 1
+20 -> 02 -> 2
+30 -> 03 -> 3
+1+2==3
+Note
+All the numbers a,b,c no more than 10 digits, excluding leading zeros(read backwards)
+
+s contains only digits, "+" and "=", "-","*" or "/" will not appear in the string.
+
+Happy Coding ^_^
+ */
+
+ // shorter ==> fun isTuringEquation(s: String): Boolean = s.split('+', '=').map { it.reversed().toInt() }.let { it[0] + it[1] == it[2] }
+
+fun isTuringEquation(s: String): Boolean {
+
+    val primerNumero = s.substringBefore("+").reversed().toLong()
+    val segundoNumero = s.substringAfter("+").substringBefore("=").reversed().toLong()
+    val resultado = s.substringAfter("=").reversed().toLong()
+
+    return (primerNumero + segundoNumero) == resultado
 }
+
+fun main() {
+    isTuringEquation("000002913+0000037048=0000039961")
+    isTuringEquation("0000015204+0000017105=0000032309")
+
+}
+

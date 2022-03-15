@@ -1,3 +1,5 @@
+import java.lang.Math.pow
+import kotlin.math.pow
 import kotlin.test.assertEquals
 
 /**
@@ -53,26 +55,26 @@ if (ticket.count { pair -> pair.first.any { it.toInt() == pair.second } } >= win
  * Description:
 Encrypt this!
 
-    You want to create secret messages which can be deciphered by the Decipher this! kata. Here are the conditions:
+You want to create secret messages which can be deciphered by the Decipher this! kata. Here are the conditions:
 
-    Your message is a string containing space separated words.
-    You need to encrypt each word in the message using the following rules:
-    The first letter must be converted to its ASCII code.
-    The second letter must be switched with the last letter
-    Keepin' it simple: There are no special characters in the input.
-    Examples:
-    encryptThis "Hello" == "72olle"
-    encryptThis "good" == "103doo"
-    encryptThis "hello world" == "104olle 119drlo"
+Your message is a string containing space separated words.
+You need to encrypt each word in the message using the following rules:
+The first letter must be converted to its ASCII code.
+The second letter must be switched with the last letter
+Keepin' it simple: There are no special characters in the input.
+Examples:
+encryptThis "Hello" == "72olle"
+encryptThis "good" == "103doo"
+encryptThis "hello world" == "104olle 119drlo"
  */
 
-fun encryptThis(text:String): String{
+fun encryptThis(text: String): String {
     val listaString = text.split(" ").toMutableList()
 
     listaString.forEachIndexed { index, str ->
-        if (str.length>1){
-            var charArray =  str.toCharArray()
-            var charArrayCOpy =  str.toCharArray().copyOf()
+        if (str.length > 1) {
+            var charArray = str.toCharArray()
+            var charArrayCOpy = str.toCharArray().copyOf()
 
             charArrayCOpy[1] = charArray[charArray.lastIndex]
             charArrayCOpy[charArray.lastIndex] = charArray[1]
@@ -80,8 +82,7 @@ fun encryptThis(text:String): String{
 
 
             listaString[index] = word.replaceFirstChar { it.code.toString() }
-        }
-        else{
+        } else {
             listaString[index] = str.replaceFirstChar { it.code.toString() }
         }
     }
@@ -118,7 +119,7 @@ fun meeting(s: String): String {
     var listaOrdenada = mutableListOf<String>()
 
     listadoNombres.forEach { s ->
-        var temp =s.split(":")
+        var temp = s.split(":")
         var pal = s.split(":").toMutableList()
         pal[0] = temp[1]
         pal[1] = temp[0]
@@ -135,9 +136,83 @@ fun meeting(s: String): String {
 //        .sorted()
 //        .joinToString("")
 
-fun main() {
-   // meeting("Alexis:Wahl;John:Bell;Victoria:Schwarz;Abba:Dorny;Grace:Meta;Ann:Arno;Madison:STAN;Alex:Cornwell;Lewis:Kern;Megan:Stan;Alex:Korn")
-    assertEquals("(ARNO, ANN)(BELL, JOHN)(CORNWELL, ALEX)(DORNY, ABBA)(KERN, LEWIS)(KORN, ALEX)(META, GRACE)(SCHWARZ, VICTORIA)(STAN, MADISON)(STAN, MEGAN)(WAHL, ALEXIS)", meeting("Alexis:Wahl;John:Bell;Victoria:Schwarz;Abba:Dorny;Grace:Meta;Ann:Arno;Madison:STAN;Alex:Cornwell;Lewis:Kern;Megan:Stan;Alex:Korn"))
-    assertEquals("(BELL, MEGAN)(CORNWELL, AMBER)(DORNY, JAMES)(DORRIES, PAUL)(GATES, JOHN)(KERN, ANN)(KORN, ANNA)(META, ALEX)(RUSSEL, ELIZABETH)(STEVE, LEWIS)(WAHL, MICHAEL)", meeting("John:Gates;Michael:Wahl;Megan:Bell;Paul:Dorries;James:Dorny;Lewis:Steve;Alex:Meta;Elizabeth:Russel;Anna:Korn;Ann:Kern;Amber:Cornwell"))
-    assertEquals("(ARNO, ALEX)(ARNO, HALEY)(BELL, SARAH)(CORNWELL, ALISSA)(DORNY, PAUL)(DORRIES, ANDREW)(KERN, ANN)(KERN, MADISON)", meeting("Alex:Arno;Alissa:Cornwell;Sarah:Bell;Andrew:Dorries;Ann:Kern;Haley:Arno;Paul:Dorny;Madison:Kern"))
+
+/**
+ *A Rule of Divisibility by 13
+
+ *From Wikipedia:
+
+"A divisibility rule is a shorthand way of determining whether a given integer is divisible by a fixed divisor without performing the division, usually by examining its digits."
+
+When you divide the successive powers of 10 by 13 you get the following remainders of the integer divisions:
+
+1, 10, 9, 12, 3, 4 because:
+
+10 ^ 0 ->  1 (mod 13)
+10 ^ 1 -> 10 (mod 13)
+10 ^ 2 ->  9 (mod 13)
+10 ^ 3 -> 12 (mod 13)
+10 ^ 4 ->  3 (mod 13)
+10 ^ 5 ->  4 (mod 13)
+(For "mod" you can see: https://en.wikipedia.org/wiki/Modulo_operation)
+
+Then the whole pattern repeats. Hence the following method:
+
+Multiply
+
+the right most digit of the number with the left most number in the sequence shown above,
+the second right most digit with the second left most digit of the number in the sequence.
+The cycle goes on and you sum all these products. Repeat this process until the sequence of sums is stationary.
+
+Example:
+What is the remainder when 1234567 is divided by 13?
+
+7      6     5      4     3     2     1  (digits of 1234567 from the right)
+×      ×     ×      ×     ×     ×     ×  (multiplication)
+1     10     9     12     3     4     1  (the repeating sequence)
+Therefore following the method we get:
+
+7×1 + 6×10 + 5×9 + 4×12 + 3×3 + 2×4 + 1×1 = 178
+
+We repeat the process with the number 178:
+
+8x1 + 7x10 + 1x9 = 87
+
+and again with 87:
+
+7x1 + 8x10 = 87
+
+From now on the sequence is stationary (we always get 87) and the remainder of 1234567 by 13 is the same as the remainder of 87 by 13 ( i.e 9).
+
+Task:
+Call thirt the function which processes this sequence of operations on an integer n (>=0). thirt will return the stationary number.
+
+thirt(1234567) calculates 178, then 87, then 87 and returns 87.
+
+thirt(321) calculates 48, 48 and returns 48
+ *
+ * https://www.codewars.com/kata/564057bc348c7200bd0000ff/train/kotlin
+ */
+
+//import kotlin.math.pow
+fun thirt(n: Long): Long {
+    while (n >= 100) {
+        val listReversed = n.toString().reversed().map { it.toString().toLong() }.toMutableList()
+        listReversed.forEachIndexed { index, l ->
+            val exponente = (10.0.pow(index.toDouble()) % 13).toInt()
+            listReversed[index] = l * exponente
+        }
+        return thirt(listReversed.sum())
+    }
+    return n
 }
+//fun thirt(n: Long): Long {
+//    val new = n.toString().reversed().map { it - '0' }.mapIndexed { i, c -> rem[i% rem.size] * c }.sum().toLong()
+//    return if (new == n) n
+//    else thirt(new)
+//}
+
+fun main() {
+
+}
+

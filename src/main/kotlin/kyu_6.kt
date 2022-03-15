@@ -47,10 +47,57 @@ if (ticket.count { pair -> pair.first.any { it.toInt() == pair.second } } >= win
 
  */
 
+/**
+ * Encrypt this!
+
+ * Description:
+Encrypt this!
+
+    You want to create secret messages which can be deciphered by the Decipher this! kata. Here are the conditions:
+
+    Your message is a string containing space separated words.
+    You need to encrypt each word in the message using the following rules:
+    The first letter must be converted to its ASCII code.
+    The second letter must be switched with the last letter
+    Keepin' it simple: There are no special characters in the input.
+    Examples:
+    encryptThis "Hello" == "72olle"
+    encryptThis "good" == "103doo"
+    encryptThis "hello world" == "104olle 119drlo"
+ */
+
+fun encryptThis(text:String): String{
+    val listaString = text.split(" ").toMutableList()
+
+    listaString.forEachIndexed { index, str ->
+        if (str.length>1){
+            var charArray =  str.toCharArray()
+            var charArrayCOpy =  str.toCharArray().copyOf()
+
+            charArrayCOpy[1] = charArray[charArray.lastIndex]
+            charArrayCOpy[charArray.lastIndex] = charArray[1]
+            var word = charArrayCOpy.joinToString("")
+
+
+            listaString[index] = word.replaceFirstChar { it.code.toString() }
+        }
+        else{
+            listaString[index] = str.replaceFirstChar { it.code.toString() }
+        }
+    }
+    println(listaString.joinToString(" "))
+    return listaString.joinToString(" ")
+
+
+}
+// shorter ==> fun encryptThis(text:String): String{
+//    return text.split(" ").map { it.first().toInt().toString() + it.drop(2).takeLast(1) + it.drop(2).dropLast(1) + it.drop(1).take(1) }.joinToString(" ")
+//}
+
 fun main() {
-    println(bingo(arrayOf("ABC" to 65, "HGR" to 74, "BYHT" to 74), 2))
-    println(bingo(arrayOf("HGTYRE" to 74, "BE" to 66, "JKTY" to 74), 3))
-    assertEquals("Loser!", bingo(arrayOf("ABC" to 65, "HGR" to 74, "BYHT" to 74), 2))
-    assertEquals("Winner!", bingo(arrayOf("ABC" to 65, "HGR" to 74, "BYHT" to 74), 1))
-    assertEquals("Loser!", bingo(arrayOf("HGTYRE" to 74, "BE" to 66, "JKTY" to 74), 3))
+    assertEquals("65 119esi 111dl 111lw 108dvei 105n 97n 111ka", encryptThis("A wise old owl lived in an oak"))
+    assertEquals("84eh 109ero 104e 115wa 116eh 108sse 104e 115eokp", encryptThis("The more he saw the less he spoke"))
+    assertEquals("84eh 108sse 104e 115eokp 116eh 109ero 104e 104dare", encryptThis("The less he spoke the more he heard"))
+    assertEquals("87yh 99na 119e 110to 97ll 98e 108eki 116tah 119esi 111dl 98dri", encryptThis("Why can we not all be like that wise old bird"))
+    assertEquals("84kanh 121uo 80roti 102ro 97ll 121ruo 104ple", encryptThis("Thank you Piotr for all your help"))
 }

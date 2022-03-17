@@ -4,3 +4,5 @@ H
 :
 
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
+H
+src/main/kotlin/kyu_7.kt,6\b\6bf28b112d0a7ec6a761bbeaa6c69a7b0812ee3b

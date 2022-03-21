@@ -1,4 +1,3 @@
-import java.lang.Math.pow
 import kotlin.math.pow
 import kotlin.test.assertEquals
 
@@ -246,16 +245,16 @@ If you are given an array with multiple answers, return the lowest correct index
  * https://www.codewars.com/kata/5679aa472b8f57fb8c000047/train/kotlin
  */
 
-fun findEvenIndex(arr:IntArray):Int {
+fun findEvenIndex(arr: IntArray): Int {
 
     arr.forEachIndexed { index, i ->
-        var a  = arr.take(index+1)
-       // println(a)
+        var a = arr.take(index + 1)
+        // println(a)
     }
     var right: Int
     var left: Int
 
-    for (i in 1 until arr.size){
+    for (i in 1 until arr.size) {
         right = arr.take(i).sum()
         var r = arr.take(i)
         left = arr.takeLast(i).sum()
@@ -295,69 +294,42 @@ The line separator of results may depend on the language \nor \r\n. In Pascal \n
  */
 
 fun catalog(s: String, article: String): String {
-    val mmmm = """"ladder > prx: ${'$'}112 qty: 12""""
-    val n = """"<prod><name>ladder</name><prx>112</prx><qty>12</qty></prod>""""
-    var word = n.substringAfter(article).substringBefore("</prod>")
-    val price = n.substringAfter("<prx>").substringBefore("</prx>")
-    val qty = n.substringAfter("<qty>").substringBefore("</qty>")
-    //word = word.replace("<prod>", article).replace()
-    val wordToReturn = """$article > prx: ${'$'}$price qty: $qty"""
-    val r = Regex(article).findAll(s).map { it}
-    println(r)
-    println(wordToReturn)
-    return wordToReturn
+    val finder = s.split("<prod>", "</prod>")
+        .filter { it.isNotBlank() }
+        .filter { product -> product.contains(article)}
+
+    var listadoReturn = mutableListOf<String>()
+
+    finder.forEach { product ->
+        var productoAgregar = product.replace("<name>", "")
+            .replace("</name>", " > ")
+            .replace("<prx>", "prx: ${'$'}")
+            .replace("</prx>", "")
+            .replace("<qty>", " qty: ")
+            .replace("</qty>", "")
+
+        listadoReturn.add(productoAgregar)
+    }
+
+    return if (finder.isNotEmpty()) listadoReturn.joinToString("\n") else "Nothing"
 }
+/* Shorter
+fun catalog(s: String, article: String): String = s.split("\n\n")
+            .filter { it.contains(article) }
+            .joinToString("\n") {
+                it.replace(Regex("""<prod><name>(.*?)</name><prx>(.*?)</prx><qty>(.*?)</qty></prod>""")) { result ->
+                    "${result.groupValues[1]} > prx: $${result.groupValues[2]} qty: ${result.groupValues[3]}"
+                }}
+            .ifEmpty { "Nothing" }
+ */
+
+
+
 fun main() {
 
-    val s = """<prod><name>drill</name><prx>99</prx><qty>5</qty></prod>
 
-<prod><name>hammer</name><prx>10</prx><qty>50</qty></prod>
 
-<prod><name>screwdriver</name><prx>5</prx><qty>51</qty></prod>
 
-<prod><name>table saw</name><prx>1099.99</prx><qty>5</qty></prod>
-
-<prod><name>saw</name><prx>9</prx><qty>10</qty></prod>
-
-<prod><name>chair</name><prx>100</prx><qty>20</qty></prod>
-
-<prod><name>fan</name><prx>50</prx><qty>8</qty></prod>
-
-<prod><name>wire</name><prx>10.8</prx><qty>15</qty></prod>
-
-<prod><name>battery</name><prx>150</prx><qty>12</qty></prod>
-
-<prod><name>pallet</name><prx>10</prx><qty>50</qty></prod>
-
-<prod><name>wheel</name><prx>8.80</prx><qty>32</qty></prod>
-
-<prod><name>extractor</name><prx>105</prx><qty>17</qty></prod>
-
-<prod><name>bumper</name><prx>150</prx><qty>3</qty></prod>
-
-<prod><name>ladder</name><prx>112</prx><qty>12</qty></prod>
-
-<prod><name>hoist</name><prx>13.80</prx><qty>32</qty></prod>
-
-<prod><name>platform</name><prx>65</prx><qty>21</qty></prod>
-
-<prod><name>car wheel</name><prx>505</prx><qty>7</qty></prod>
-
-<prod><name>bicycle wheel</name><prx>150</prx><qty>11</qty></prod>
-
-<prod><name>big hammer</name><prx>18</prx><qty>12</qty></prod>
-
-<prod><name>saw for metal</name><prx>13.80</prx><qty>32</qty></prod>
-
-<prod><name>wood pallet</name><prx>65</prx><qty>21</qty></prod>
-
-<prod><name>circular fan</name><prx>80</prx><qty>8</qty></prod>
-
-<prod><name>exhaust fan</name><prx>62</prx><qty>8</qty></prod>
-
-<prod><name>window fan</name><prx>62</prx><qty>8</qty></prod>"""
-    catalog(s,"ladder" )
-    catalog(s,"saw" )
-    assertEquals("ladder > prx: $112 qty: 12", catalog(s, "ladder"))
 }
+
 

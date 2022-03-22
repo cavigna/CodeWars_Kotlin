@@ -1,3 +1,4 @@
+import java.util.*
 import kotlin.math.pow
 import kotlin.test.assertEquals
 
@@ -417,7 +418,34 @@ fun longestConsec(strarr:Array<String>, k:Int): String {
 }
  */
 
+
+/**
+ * Tricky Kotlin #0: extension constructor
+ *
+ *This is a series of Kotlin tricks.
+ * As we all know, Kotlin supports something called extension methods, which means you can add some methods to some existing classes.
+ * In this Kata, you should make some extension constructor. For example, you can add a constructor to kotlin.Int that accepts a String and parse the string to int.
+ * You should add such extension constructor to kotlin.Int, kotlin.Long, kotlin.Double.
+ * [https://www.codewars.com/kata/59b336de5fb1334711000067/train/kotlin]
+ *
+ *
+ */
+
+fun Int.Int(s: String): Int {
+    val n = s.toInt()
+    return this
+}
+
+fun Int.Int22(s: String): Int {
+    return s.toInt()
+}
+fun Long(s: String) = s.toLong()
+fun Double(s: String) = s.toDouble()
+
 fun main() {
 
+    val r = Random(System.currentTimeMillis())
+//    (0..100).forEach { r.nextInt().let { assertEquals(it, kotlin.Int(it.toString())) } }
+    println(100.Int("9"))
 
 }

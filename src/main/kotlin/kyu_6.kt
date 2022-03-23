@@ -1,6 +1,4 @@
-import java.util.*
 import kotlin.math.pow
-import kotlin.test.assertEquals
 
 /**
  *
@@ -429,23 +427,134 @@ fun longestConsec(strarr:Array<String>, k:Int): String {
  * [https://www.codewars.com/kata/59b336de5fb1334711000067/train/kotlin]
  *
  *
- */
+ *
+ *     val r = Random(System.currentTimeMillis())
 
-fun Int.Int(s: String): Int {
-    val n = s.toInt()
-    return this
+println(100.Int("9"))
+//println(kotlin.Int("100"))
+(0..100).forEach { r.nextInt().let { assertEquals(it, kotlin.Int(it.toString())) } }
+//(0..100).forEach { r.nextInt().let { assertEquals(it, kotlin.Int(it.toString()))
+
+
+//class kotlin(){
+//    fun Int(s: String) = s.toInt()
+//}
+//class Int(){
+//    constructor(s:String): this(s)
+//}
+
+/*
+get() = s.toInt()
+set() = s.toInt()
+val n = kotlin.Int.Companion
+
+s.toInt()
+return (this to s.toInt()).second
+*/
+fun kotlin.Int.Int2(s: String): Int {
+
+
+//this.toInt() = s.toInt()
+
+return this
+
 }
 
-fun Int.Int22(s: String): Int {
-    return s.toInt()
-}
+fun Int.Int(s: String) =  this.apply {  (this to s.toInt()).second }
+
+
 fun Long(s: String) = s.toLong()
 fun Double(s: String) = s.toDouble()
+ */
+
+/**
+ *
+ * Decompose double strand DNA into 6 reading frames
+ *
+ * In a double strand DNA you find 3 more Reading frames than the single strand DNA reading frames base on the reverse complement-strand.
+
+Input
+Given a DNA sequence like the following
+
+AGGTGACACCGCAAGCCTTATATTAGC
+Processing
+In the reverse complement the following transformations are made
+
+A-->T
+G-->C
+T-->A
+C-->G
+Due to the splicing of DNA strands and the fixed reading direction of a nucleotide strand, the reverse complement gets read from right to left.
+
+DNA                     AGGTGACACCGCAAGCCTTATATTAGC
+Reverse complement:     TCCACTGTGGCGTTCGGAATATAATCG
+reversed reverse frame: GCTAATATAAGGCTTGCGGTGTCACCT
+Output
+You'll have to output:
+
+Frame 1: AGG TGA CAC CGC AAG CCT TAT ATT AGC
+Frame 2: A GGT GAC ACC GCA AGC CTT ATA TTA GC
+Frame 3: AG GTG ACA CCG CAA GCC TTA TAT TAG C
+
+Reverse Frame 1: GCT AAT ATA AGG CTT GCG GTG TCA CCT
+Reverse Frame 2: G CTA ATA TAA GGC TTG CGG TGT CAC CT
+Reverse Frame 3: GC TAA TAT AAG GCT TGC GGT GTC ACC T
+Instructions on how to output the first 3 frames are on a previous simpler kata Decompose single strand DNA into 3 reading frames
+
+ */
+
+/**
+ * Frame 1: AGG TGA CAC CGC AAG CCT TAT ATT AGC
+Frame 2: A GGT GAC ACC GCA AGC CTT ATA TTA GC
+Frame 3: AG GTG ACA CCG CAA GCC TTA TAT TAG C
+ */
+
+fun decomposeDoubleStrand(doubleStrand: String = "AGGTGACACCGCAAGCCTTATATTAGC"): String {
+    val frame1 = doubleStrand.chunked(3).joinToString(" ")
+    val frame2 = doubleStrand.takeLast(doubleStrand.length - 1).chunked(3).toMutableList().also {
+        it.add(0, doubleStrand.take(1))
+    }.joinToString(" ")
+    val frame3 = doubleStrand.takeLast(doubleStrand.length - 2).chunked(3).toMutableList().also {
+        it.add(0, doubleStrand.take(2))
+    }.joinToString(" ")
+
+    val reversed1 = doubleStrand.map { it.toString() }.toMutableList().also {
+        it.forEachIndexed { index, s ->
+            when (s) {
+                "A" -> it[index] = "T"
+                "G" -> it[index] = "C"
+                "T" -> it[index] = "A"
+                "C" -> it[index] = "G"
+            }
+        }
+    }.joinToString("")
+
+    fun reversed(doubleStrandS: String): String = doubleStrandS
+        .map { it.toString() }
+        .toMutableList()
+        .also {
+            it.forEachIndexed { index, s ->
+                when (s) {
+                    "A" -> it[index] = "T"
+                    "G" -> it[index] = "C"
+                    "T" -> it[index] = "A"
+                    "C" -> it[index] = "G"
+                }
+            }
+        }.joinToString("")
+
+    val reverseComplement = reversed(doubleStrandS = doubleStrand)
+    val reversedReverseFrame = reversed(doubleStrandS = reverseComplement)
+
+    //println(frame2)
+    println(reversedReverseFrame)
+    return "Frame 1: $frame1 \nFrame 2: $frame2 \n"
+}
 
 fun main() {
-
-    val r = Random(System.currentTimeMillis())
-//    (0..100).forEach { r.nextInt().let { assertEquals(it, kotlin.Int(it.toString())) } }
-    println(100.Int("9"))
+    val uno = "TCCACTGTGGCGTTCGGAATATAATCG"
+    val dos = "TCCACTGTGGCGTTCGGAATATAATCG"
+    println(dos == uno)
+   decomposeDoubleStrand()
 
 }

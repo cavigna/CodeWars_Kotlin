@@ -1,4 +1,5 @@
 import kotlin.math.pow
+import kotlin.test.assertEquals
 
 /**
  *
@@ -511,14 +512,48 @@ Frame 3: AG GTG ACA CCG CAA GCC TTA TAT TAG C
 
 fun decomposeDoubleStrand(doubleStrand: String = "AGGTGACACCGCAAGCCTTATATTAGC"): String {
     val frame1 = doubleStrand.chunked(3).joinToString(" ")
-    val frame2 = doubleStrand.takeLast(doubleStrand.length - 1).chunked(3).toMutableList().also {
+
+    val frame2 = doubleStrand.takeLast(doubleStrand.length - 1)
+        .chunked(3).toMutableList().also {
         it.add(0, doubleStrand.take(1))
     }.joinToString(" ")
-    val frame3 = doubleStrand.takeLast(doubleStrand.length - 2).chunked(3).toMutableList().also {
+
+    val frame3 = doubleStrand.takeLast(doubleStrand.length - 2)
+        .chunked(3).toMutableList().also {
         it.add(0, doubleStrand.take(2))
     }.joinToString(" ")
 
-    val reversed1 = doubleStrand.map { it.toString() }.toMutableList().also {
+    val reverse = doubleStrand.map { it.toString() }.toMutableList().also {
+        it.forEachIndexed { index, s ->
+            when (s) {
+                "A" -> it[index] = "T"
+                "G" -> it[index] = "C"
+                "T" -> it[index] = "A"
+                "C" -> it[index] = "G"
+            }
+        }
+    }.joinToString("").reversed()
+
+    val reverseFrame1 = reverse.chunked(3).joinToString(" ")
+
+    val reverseFrame2 = reverse.takeLast(reverse.length - 1)
+        .chunked(3).toMutableList().also {
+        it.add(0, reverse.take(1))
+    }.joinToString(" ")
+
+    val reverseFrame3 = reverse.takeLast(reverse.length - 2)
+        .chunked(3).toMutableList().also {
+        it.add(0, reverse.take(2))
+    }.joinToString(" ")
+
+    return "Frame 1: $frame1\nFrame 2: $frame2\nFrame 3: $frame3\n\nReverse Frame 1: " +
+            "$reverseFrame1\nReverse Frame 2: $reverseFrame2\nReverse Frame 3: $reverseFrame3"
+}
+
+fun reversedFunction(doubleStrandS: String): String = doubleStrandS
+    .map { it.toString() }
+    .toMutableList()
+    .also {
         it.forEachIndexed { index, s ->
             when (s) {
                 "A" -> it[index] = "T"
@@ -529,32 +564,7 @@ fun decomposeDoubleStrand(doubleStrand: String = "AGGTGACACCGCAAGCCTTATATTAGC"):
         }
     }.joinToString("")
 
-    fun reversed(doubleStrandS: String): String = doubleStrandS
-        .map { it.toString() }
-        .toMutableList()
-        .also {
-            it.forEachIndexed { index, s ->
-                when (s) {
-                    "A" -> it[index] = "T"
-                    "G" -> it[index] = "C"
-                    "T" -> it[index] = "A"
-                    "C" -> it[index] = "G"
-                }
-            }
-        }.joinToString("")
-
-    val reverseComplement = reversed(doubleStrandS = doubleStrand)
-    val reversedReverseFrame = reversed(doubleStrandS = reverseComplement)
-
-    //println(frame2)
-    println(reversedReverseFrame)
-    return "Frame 1: $frame1 \nFrame 2: $frame2 \n"
-}
-
 fun main() {
-    val uno = "TCCACTGTGGCGTTCGGAATATAATCG"
-    val dos = "TCCACTGTGGCGTTCGGAATATAATCG"
-    println(dos == uno)
-   decomposeDoubleStrand()
+
 
 }

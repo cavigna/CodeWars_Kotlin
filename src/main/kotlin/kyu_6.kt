@@ -515,13 +515,13 @@ fun decomposeDoubleStrand(doubleStrand: String = "AGGTGACACCGCAAGCCTTATATTAGC"):
 
     val frame2 = doubleStrand.takeLast(doubleStrand.length - 1)
         .chunked(3).toMutableList().also {
-        it.add(0, doubleStrand.take(1))
-    }.joinToString(" ")
+            it.add(0, doubleStrand.take(1))
+        }.joinToString(" ")
 
     val frame3 = doubleStrand.takeLast(doubleStrand.length - 2)
         .chunked(3).toMutableList().also {
-        it.add(0, doubleStrand.take(2))
-    }.joinToString(" ")
+            it.add(0, doubleStrand.take(2))
+        }.joinToString(" ")
 
     val reverse = doubleStrand.map { it.toString() }.toMutableList().also {
         it.forEachIndexed { index, s ->
@@ -538,19 +538,19 @@ fun decomposeDoubleStrand(doubleStrand: String = "AGGTGACACCGCAAGCCTTATATTAGC"):
 
     val reverseFrame2 = reverse.takeLast(reverse.length - 1)
         .chunked(3).toMutableList().also {
-        it.add(0, reverse.take(1))
-    }.joinToString(" ")
+            it.add(0, reverse.take(1))
+        }.joinToString(" ")
 
     val reverseFrame3 = reverse.takeLast(reverse.length - 2)
         .chunked(3).toMutableList().also {
-        it.add(0, reverse.take(2))
-    }.joinToString(" ")
+            it.add(0, reverse.take(2))
+        }.joinToString(" ")
 
     return "Frame 1: $frame1\nFrame 2: $frame2\nFrame 3: $frame3\n\nReverse Frame 1: " +
             "$reverseFrame1\nReverse Frame 2: $reverseFrame2\nReverse Frame 3: $reverseFrame3"
 }
 
-fun reversedFunction(doubleStrandS: String): String = doubleStrandS
+fun reversedFunctionNotUsed(doubleStrandS: String): String = doubleStrandS
     .map { it.toString() }
     .toMutableList()
     .also {
@@ -563,6 +563,37 @@ fun reversedFunction(doubleStrandS: String): String = doubleStrandS
             }
         }
     }.joinToString("")
+
+/**
+ * Highest Scoring Word
+ * Given a string of words, you need to find the highest scoring word.
+
+Each letter of a word scores points according to its position in the alphabet: a = 1, b = 2, c = 3 etc.
+
+You need to return the highest scoring word as a string.
+
+If two words score the same, return the word that appears earliest in the original string.
+
+All letters will be lowercase and all inputs will be valid
+https://www.codewars.com/kata/57eb8fcdf670e99d9b000272/train/kotlin
+ */
+
+fun highFunction(str: String): String =
+
+    mutableMapOf<String, Int>().also {
+        str.split(" ").forEach {string ->
+            it[string] = string.sumOf { c->
+                c.code -96
+            }
+        }
+    }.maxByOrNull { it.value }?.key ?: ""
+
+
+/**
+ * fun high(str: String): String {
+return str.split(' ').maxBy{ it.sumBy{ it - 'a' + 1 } }!!
+}
+ */
 
 fun main() {
 

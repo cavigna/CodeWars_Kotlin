@@ -1,4 +1,5 @@
 import kotlin.math.pow
+import kotlin.test.assertEquals
 
 /**
  *
@@ -636,6 +637,78 @@ fun digPow(n: Int, p: Int): Int {
 
 }
 // Oneliner ==> fun digPow(n: Int, p: Int) = n.toString().mapIndexed { i, c -> c.toString().toDouble().pow(p + i).toInt() }.sum().let { if (it % n == 0) it / n else -1 }
-fun main() {
 
+
+/**Alphabet war - airstrike - letters massacre
+ *
+ * Task
+Write a function that accepts fight string consists of only small letters and * which means a bomb drop place. Return who wins the fight after bombs are exploded. When the left side wins return Left side wins!, when the right side wins return Right side wins!, in other case return Let's fight again!.
+
+The left side letters and their power:
+
+w - 4
+p - 3
+b - 2
+s - 1
+The right side letters and their power:
+
+m - 4
+q - 3
+d - 2
+z - 1
+The other letters don't have power and are only victims.
+The * bombs kill the adjacent letters ( i.e. aa*aa => a___a, **aa** => ______ );
+
+Example
+AlphabetWar("s*zz");           //=> Right side wins!
+AlphabetWar("*zd*qm*wp*bs*"); //=> Let's fight again!
+AlphabetWar("zzzz*s*");       //=> Right side wins!
+AlphabetWar("www*www****z");  //=> Left side wins!
+https://www.codewars.com/kata/5938f5b606c3033f4700015a
+ */
+fun alphabetWar(fight: String): String {
+    val reg = Regex("(?<=[*])|(?=[*])")
+
+    val lista = mutableListOf<String>().also {
+        for (i in fight.indices){
+            if (fight.getOrNull(i-1) !='*' && fight.getOrNull(i + 1) != '*'){
+                it.add(fight[i].toString())
+            }
+        }
+    }
+
+    val leftSide = "sbpw"
+    val rightSide = "zdqm"
+
+    val countRight = lista.filter { it in rightSide }.sumOf { c -> rightSide.indexOf(c)+1  }
+    val countLeft = lista.filter { it in leftSide }.sumOf { c -> leftSide.indexOf(c)+1  }
+
+    return when {
+        countLeft > countRight -> "Left side wins!"
+        countRight> countLeft -> "Right side wins!"
+        else -> "Let's fight again!"
+    }
 }
+
+fun main() {
+    alphabetWar("*zd*qm*wp*bs*")
+    alphabetWar("sz**z**zs")
+    alphabetWar("**z**")
+
+    assertEquals("Right side wins!", alphabetWar("z"))
+    assertEquals("Let's fight again!", alphabetWar("****"))
+    assertEquals("Let's fight again!", alphabetWar("z*dq*mw*pb*s"))
+    assertEquals("Let's fight again!", alphabetWar("zdqmwpbs"))
+    assertEquals("Right side wins!", alphabetWar("zz*zzs"))
+    assertEquals("Left side wins!", alphabetWar("sz**z**zs"))
+    assertEquals("Left side wins!", alphabetWar("z*z*z*zs"))
+    assertEquals("Left side wins!", alphabetWar("*wwwwww*z*"))
+}
+
+//    val listados = fight.map { it.toString() }.toMutableList()
+//    listados.forEach {
+//        println(it.takeWhile {c-> c != '*' })
+//    }
+//    println(fight.takeWhile { it.toString()!="*" })
+//    println(fight.takeLastWhile { it.toString()!="*" })
+//    println(fight.groupBy { it == '*' })

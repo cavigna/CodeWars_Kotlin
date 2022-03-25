@@ -774,24 +774,48 @@ object UnwantedDollars {
 }
  */
 
+/**
+ *Multiplication table
+ *
+ * Your task, is to create NxN multiplication table, of size provided in parameter.
+
+for example, when given size is 3:
+
+1 2 3
+2 4 6
+3 6 9
+for given example, the return value should be: [[1,2,3],[2,4,6],[3,6,9]]
+
+
+ *
+ * https://www.codewars.com/kata/534d2f5b5371ecf8d2000a08/train/kotlin
+ */
+
+fun multiplicationTable(size: Int): Array<IntArray> {
+    var counter = size
+    val listado = mutableListOf<IntArray>().also {
+
+        for (i in 1..size){
+            val a = (i..counter step i).toList()
+            counter +=size
+            it.add(a.toIntArray())
+        }
+    }
+    return listado.toTypedArray()
+}
+
+/*
+    fun multiplicationTable(size: Int) = Array<IntArray>(size) {
+        i -> (1..size).map { it * (i + 1) }.toIntArray()
+    }
+ */
+
+/**
+ * https://www.codewars.com/kata/581331293788bc1702001fa6/train/kotlin
+ */
 fun main() {
-//     UnwantedDollars.moneyValue("-$ 0.1")
-    UnwantedDollars.moneyValue("- 0.1")
-    UnwantedDollars.moneyValue("  \$-")
 
-    assertEquals(12.34, UnwantedDollars.moneyValue("12.34"), 1e-9)
-    assertEquals(5.67, UnwantedDollars.moneyValue(" $5.67"), 1e-9)
-    assertEquals(-0.89, UnwantedDollars.moneyValue("-0.89"), 1e-9)
-    assertEquals(-0.10, UnwantedDollars.moneyValue("-$ 0.1"), 1e-9)
-    assertEquals(-2.3456, UnwantedDollars.moneyValue("$-2.3456"), 1e-9)
-    assertEquals(7.0, UnwantedDollars.moneyValue("007"), 1e-9)
-    assertEquals(89.0, UnwantedDollars.moneyValue(" $ 89"), 1e-9)
-    assertEquals(0.11, UnwantedDollars.moneyValue("   .11"), 1e-9)
-    assertEquals(0.20, UnwantedDollars.moneyValue("$.2"), 1e-9)
-    assertEquals(-0.34, UnwantedDollars.moneyValue("-.34"), 1e-9)
-    assertEquals(0.0, UnwantedDollars.moneyValue("$$$"), 1e-9)
-    assertEquals(0.0, UnwantedDollars.moneyValue("  \$-"), 1e-9)
-
+multiplicationTable(3)
 
 }
 

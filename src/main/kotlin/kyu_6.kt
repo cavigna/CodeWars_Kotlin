@@ -581,9 +581,9 @@ https://www.codewars.com/kata/57eb8fcdf670e99d9b000272/train/kotlin
 fun highFunction(str: String): String =
 
     mutableMapOf<String, Int>().also {
-        str.split(" ").forEach {string ->
-            it[string] = string.sumOf { c->
-                c.code -96
+        str.split(" ").forEach { string ->
+            it[string] = string.sumOf { c ->
+                c.code - 96
             }
         }
     }.maxByOrNull { it.value }?.key ?: ""
@@ -626,12 +626,12 @@ digPow(46288, 3) should return 51 since 4³ + 6⁴+ 2⁵ + 8⁶ + 8⁷ = 2360688
 fun digPow(n: Int, p: Int): Int {
     val sumaLista = n.toString().map { it.toString().toInt() }.toMutableList().also {
         it.forEachIndexed { index, i ->
-            it[index] = i.toDouble().pow(index+p).toInt()
+            it[index] = i.toDouble().pow(index + p).toInt()
         }
     }.sum()
 
-    return when{
-        sumaLista.rem(n) ==0 -> sumaLista/n
+    return when {
+        sumaLista.rem(n) == 0 -> sumaLista / n
         else -> -1
     }
 
@@ -670,8 +670,8 @@ fun alphabetWar(fight: String): String {
     val reg = Regex("(?<=[*])|(?=[*])")
 
     val lista = mutableListOf<String>().also {
-        for (i in fight.indices){
-            if (fight.getOrNull(i-1) !='*' && fight.getOrNull(i + 1) != '*'){
+        for (i in fight.indices) {
+            if (fight.getOrNull(i - 1) != '*' && fight.getOrNull(i + 1) != '*') {
                 it.add(fight[i].toString())
             }
         }
@@ -680,35 +680,79 @@ fun alphabetWar(fight: String): String {
     val leftSide = "sbpw"
     val rightSide = "zdqm"
 
-    val countRight = lista.filter { it in rightSide }.sumOf { c -> rightSide.indexOf(c)+1  }
-    val countLeft = lista.filter { it in leftSide }.sumOf { c -> leftSide.indexOf(c)+1  }
+    val countRight = lista.filter { it in rightSide }.sumOf { c -> rightSide.indexOf(c) + 1 }
+    val countLeft = lista.filter { it in leftSide }.sumOf { c -> leftSide.indexOf(c) + 1 }
 
     return when {
         countLeft > countRight -> "Left side wins!"
-        countRight> countLeft -> "Right side wins!"
+        countRight > countLeft -> "Right side wins!"
         else -> "Let's fight again!"
     }
 }
 
-fun main() {
-    alphabetWar("*zd*qm*wp*bs*")
-    alphabetWar("sz**z**zs")
-    alphabetWar("**z**")
+/**
+ * Simple Simple Simple String Expansion
+ *
+ *Given a string that includes alphanumeric characters ('3a4B2d') return the expansion of that string: The numeric values represent the occurrence of each letter preceding that numeric value. There should be no numeric characters in the final string. Empty strings should return an empty string.
 
-    assertEquals("Right side wins!", alphabetWar("z"))
-    assertEquals("Let's fight again!", alphabetWar("****"))
-    assertEquals("Let's fight again!", alphabetWar("z*dq*mw*pb*s"))
-    assertEquals("Let's fight again!", alphabetWar("zdqmwpbs"))
-    assertEquals("Right side wins!", alphabetWar("zz*zzs"))
-    assertEquals("Left side wins!", alphabetWar("sz**z**zs"))
-    assertEquals("Left side wins!", alphabetWar("z*z*z*zs"))
-    assertEquals("Left side wins!", alphabetWar("*wwwwww*z*"))
+The first occurrence of a numeric value should be the number of times each character behind it is repeated, until the next numeric value appears.
+
+stringExpansion("3D2a5d2f") === "DDDaadddddff"
+stringExpansion("3abc") === "aaabbbccc"      // correct
+stringExpansion("3abc") !== "aaabc"          // wrong
+stringExpansion("3abc") !== "abcabcabc"      // wrong
+If there are two consecutive numeric characters the first one is ignored.
+
+stringExpansion("3d332f2a") === "dddffaa"
+If there are two consecutive alphabetic characters then the first character has no effect on the one after it.
+
+stringExpansion("abcde") === "abcde"
+Your code should be able to work for both lower and capital case letters.
+
+stringExpansion("") == ""
+ *
+ */
+
+fun stringExpansion(s: String): String {
+
+    var n = -1
+    val listadoVacio = mutableListOf<String>().also {
+        for (i in s.indices){
+            if (s[i].toString().toIntOrNull() != null){
+                n = s[i].toString().toInt()
+            }else if (n !=-1){
+                it.add(s[i].toString().repeat(n))
+            }else{
+                it.add(s[i].toString())
+            }
+        }
+    }
+
+
+    return listadoVacio.joinToString("")
+
 }
 
-//    val listados = fight.map { it.toString() }.toMutableList()
-//    listados.forEach {
-//        println(it.takeWhile {c-> c != '*' })
-//    }
-//    println(fight.takeWhile { it.toString()!="*" })
-//    println(fight.takeLastWhile { it.toString()!="*" })
-//    println(fight.groupBy { it == '*' })
+/*
+fun stringExpansion(s: String): String = buildString {
+    var num = 1
+    s.forEach{
+        if (it.isDigit()) { num = it.toString().toInt() }
+        else {
+            append(it.toString().repeat(num))
+        }
+    }
+}
+ */
+
+fun main() {
+    stringExpansion("3D2a5d2f")
+    stringExpansion("3abc")
+    stringExpansion("abcd")
+    stringExpansion("")
+
+    assertEquals(stringExpansion("3D2a5d2f"),"DDDaadddddff")
+    assertEquals(stringExpansion("3abc"),"aaabbbccc")
+    assertEquals(stringExpansion("abcd"), "abcd")
+}
+

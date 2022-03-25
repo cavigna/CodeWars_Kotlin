@@ -717,12 +717,12 @@ fun stringExpansion(s: String): String {
 
     var n = -1
     val listadoVacio = mutableListOf<String>().also {
-        for (i in s.indices){
-            if (s[i].toString().toIntOrNull() != null){
+        for (i in s.indices) {
+            if (s[i].toString().toIntOrNull() != null) {
                 n = s[i].toString().toInt()
-            }else if (n !=-1){
+            } else if (n != -1) {
                 it.add(s[i].toString().repeat(n))
-            }else{
+            } else {
                 it.add(s[i].toString())
             }
         }
@@ -745,14 +745,53 @@ fun stringExpansion(s: String): String = buildString {
 }
  */
 
-fun main() {
-    stringExpansion("3D2a5d2f")
-    stringExpansion("3abc")
-    stringExpansion("abcd")
-    stringExpansion("")
+/**
+ * Unwanted dollars
+ * do you put the $ sign in, or not? Inevitably, some people will type a $ sign and others will leave it out. The instructions could be made clearer - but that won't help those annoying people who never read instructions anyway.
 
-    assertEquals(stringExpansion("3D2a5d2f"),"DDDaadddddff")
-    assertEquals(stringExpansion("3abc"),"aaabbbccc")
-    assertEquals(stringExpansion("abcd"), "abcd")
+A better solution is to write code that can handle the input whether it includes a $ sign or not.
+
+So, we need a simple function that converts a string representing a number (possibly with a $ sign in front of it) into the number itself.
+
+Remember to consider negative numbers (the - sign may come either before or after the $ sign, if there is one), and any extraneous space characters (leading, trailing, or around the $ sign) that
+the users might put in. You do not need to handle trailing characters other than spaces (e.g. "1.2 3"). If the given string does not represent a number, (either with or without a $ sign), return 0.0 .
+https://www.codewars.com/kata/587309155cfd6b9fb60000a0/train/kotlin
+ */
+object UnwantedDollars {
+    fun moneyValue(money: String): Double {
+        val dinero = money.replace('$', ' ').filter { !it.isWhitespace() }
+        return if (dinero.filter { it.isDigit() } != ""){
+            money.replace('$', ' ').filter { !it.isWhitespace() }.toDouble()
+        } else 0.0
+
+    }
+}
+/*
+object UnwantedDollars {
+  fun moneyValue(money:String):Double {
+     return money.replace(" ", "").replace("$", "").toDoubleOrNull() ?: 0.0;
+  }
+}
+ */
+
+fun main() {
+//     UnwantedDollars.moneyValue("-$ 0.1")
+    UnwantedDollars.moneyValue("- 0.1")
+    UnwantedDollars.moneyValue("  \$-")
+
+    assertEquals(12.34, UnwantedDollars.moneyValue("12.34"), 1e-9)
+    assertEquals(5.67, UnwantedDollars.moneyValue(" $5.67"), 1e-9)
+    assertEquals(-0.89, UnwantedDollars.moneyValue("-0.89"), 1e-9)
+    assertEquals(-0.10, UnwantedDollars.moneyValue("-$ 0.1"), 1e-9)
+    assertEquals(-2.3456, UnwantedDollars.moneyValue("$-2.3456"), 1e-9)
+    assertEquals(7.0, UnwantedDollars.moneyValue("007"), 1e-9)
+    assertEquals(89.0, UnwantedDollars.moneyValue(" $ 89"), 1e-9)
+    assertEquals(0.11, UnwantedDollars.moneyValue("   .11"), 1e-9)
+    assertEquals(0.20, UnwantedDollars.moneyValue("$.2"), 1e-9)
+    assertEquals(-0.34, UnwantedDollars.moneyValue("-.34"), 1e-9)
+    assertEquals(0.0, UnwantedDollars.moneyValue("$$$"), 1e-9)
+    assertEquals(0.0, UnwantedDollars.moneyValue("  \$-"), 1e-9)
+
+
 }
 

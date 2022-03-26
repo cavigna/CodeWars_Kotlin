@@ -760,7 +760,7 @@ https://www.codewars.com/kata/587309155cfd6b9fb60000a0/train/kotlin
 object UnwantedDollars {
     fun moneyValue(money: String): Double {
         val dinero = money.replace('$', ' ').filter { !it.isWhitespace() }
-        return if (dinero.filter { it.isDigit() } != ""){
+        return if (dinero.filter { it.isDigit() } != "") {
             money.replace('$', ' ').filter { !it.isWhitespace() }.toDouble()
         } else 0.0
 
@@ -795,9 +795,9 @@ fun multiplicationTable(size: Int): Array<IntArray> {
     var counter = size
     val listado = mutableListOf<IntArray>().also {
 
-        for (i in 1..size){
+        for (i in 1..size) {
             val a = (i..counter step i).toList()
-            counter +=size
+            counter += size
             it.add(a.toIntArray())
         }
     }
@@ -813,9 +813,36 @@ fun multiplicationTable(size: Int): Array<IntArray> {
 /**
  * https://www.codewars.com/kata/581331293788bc1702001fa6/train/kotlin
  */
+
+fun mirror(text: String = "Hello World"): String {
+    val largo = text.split(" ").maxByOrNull { it.length }!!.length
+    var topBottom = largo?.let { "*".repeat((it + 4)) }
+    val top = "$topBottom\n"
+    val bottom = "\n$topBottom"
+
+    val reversedList = text.reversed().split(" ").reversed().toMutableList().also {
+        it.forEachIndexed { index, s ->
+            if (index == it.size-1){
+                it[index] = "* $s ${" ".repeat(largo!! - s.length)}*"
+
+            }else{
+                it[index] = "* $s ${" ".repeat(largo!! - s.length)}*\n"
+            }
+        }
+        it.add(0, top)
+        it.add(it.size, bottom)
+    }
+
+
+    return reversedList.joinToString("")
+}
+
 fun main() {
+    mirror()
+    mirror("Codewars")
+    mirror("ak tjdtwha rtv ayliebog ihy")
 
-multiplicationTable(3)
-
+//    assertEquals("*********\n* olleH *\n* dlroW *\n*********", mirror("Hello World"))
+//    assertEquals("************\n* srawedoC *\n************", mirror("Codewars"))
 }
 

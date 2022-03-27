@@ -822,10 +822,10 @@ fun mirror(text: String = "Hello World"): String {
 
     val reversedList = text.reversed().split(" ").reversed().toMutableList().also {
         it.forEachIndexed { index, s ->
-            if (index == it.size-1){
+            if (index == it.size - 1) {
                 it[index] = "* $s ${" ".repeat(largo!! - s.length)}*"
 
-            }else{
+            } else {
                 it[index] = "* $s ${" ".repeat(largo!! - s.length)}*\n"
             }
         }
@@ -837,12 +837,95 @@ fun mirror(text: String = "Hello World"): String {
     return reversedList.joinToString("")
 }
 
-fun main() {
-    mirror()
-    mirror("Codewars")
-    mirror("ak tjdtwha rtv ayliebog ihy")
 
-//    assertEquals("*********\n* olleH *\n* dlroW *\n*********", mirror("Hello World"))
-//    assertEquals("************\n* srawedoC *\n************", mirror("Codewars"))
+/**
+ *  Simple Fun #319: Number And IP Address
+ * An IP address contains four numbers(0-255) and separated by dots. It can be converted to a number by this way:
+
+Given a string s represents a number or an IP address. Your task is to convert it to another representation(number to IP address or IP address to number).
+
+You can assume that all inputs are valid.
+
+Example
+Example IP address: 10.0.3.193
+
+Convert each number to a 8-bit binary string (may needs to pad leading zeros to the left side):
+
+10  -->  00001010
+0   -->  00000000
+3   -->  00000011
+193 -->  11000001
+Combine these four strings: 00001010 00000000 00000011 11000001 and then convert them to a decimal number: 167773121
+
+Input/Output
+[input] string s
+
+A number or IP address in string format.
+
+[output] a string
+
+A converted number or IP address in string format.
+
+Example
+For s = "10.0.3.193", the output should be "167773121".
+
+For s = "167969729", the output should be "10.3.3.193".
+
+[https://www.codewars.com/kata/5936371109ca68fe6900000c/train/kotlin]
+ */
+
+fun Int.to32bitString(): String =
+    Integer.toBinaryString(this).padStart(Int.SIZE_BITS, '0')
+
+//fun Long.to32Bit():String =
+
+fun Int.to8BitString(): String =
+    Integer.toBinaryString(this).padStart(8, '0')
+
+
+fun numberAndIPaddress(s: String = "10.0.3.193"): String {
+
+    val isIP = s.any { !it.isDigit() }
+    println(isIP)
+
+    var string:String
+    if (isIP) {
+        val listaIP = s.split(".")
+        val strIP = listaIP.toMutableList().also { l ->
+            l.forEachIndexed { index, s ->
+                l[index] = s.toInt().to8BitString()
+            }
+
+        }.joinToString("")
+        string = strIP.toInt(2).toString()
+
+
+        println(strIP.toInt(2))
+    }else {
+        //val listaNumber =
+        val m = s.toInt().to32bitString().chunked(8).toMutableList().also {
+            it.forEachIndexed { index, s ->
+                it[index] = s.toInt(2).toString()
+            }
+        }.joinToString(".")
+        println(m)
+        string = m
+    }
+
+
+
+
+    return string
+}
+
+fun main() {
+    numberAndIPaddress() // 167773121
+    numberAndIPaddress("167969729") // 10.3.3.193
+    numberAndIPaddress("4048209298") // 10.3.3.193
+
+    println("4048209298".toLong(2))
+
+    assertEquals("167773121", numberAndIPaddress("10.0.3.193"))
+    assertEquals("10.3.3.193", numberAndIPaddress("167969729"))
 }
 

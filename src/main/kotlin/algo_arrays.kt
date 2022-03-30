@@ -17,6 +17,7 @@ fun findMissing(list: List<Int> = (0..100).toMutableList().also { it.remove(23) 
 
 /**
  * How do you find the duplicate number on a given integer array?
+ *
  */
 
 fun duplicateInt(lista: List<Int> = listOf(-23,140,-93,16699,3,12,18,55,3)): Int{

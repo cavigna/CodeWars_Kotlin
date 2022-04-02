@@ -83,43 +83,8 @@ class Alumno(var name: String, val ramos: MutableList<Ramo> = mutableListOf()) {
 
 fun String.ordenar(): String = this.toCharArray().apply { this.sort() }.joinToString("")
 
-fun anagrams(list: List<String>): List<String> {
 
-    val res = list.toMutableList()
-
-    val stack = mutableListOf<String>()
-
-    for (i in 0 until list.size - 1) {
-        var current = list[i].ordenar()
-
-        var next = list[i + 1].ordenar()
-
-        res.add(list.filter { it.ordenar() == list[i].ordenar()  }.first())
-
-        if (!stack.contains(list[i]) && stack.firstOrNull { it.ordenar() !=current } == null) {
-
-
-        }
-
-    }
-
-    val a = res.filter { it.ordenar() == "cdeo"}
-    //println(a)
-    res.sort()
-
-    println(res)
-    //println(stack)
-    return emptyList()
-    /*
-    anagrams(listOf("code", "doce", "ecod", "framer", "frame"))
-    anagrams(listOf("aaagmnrs", "code"))
-    anagrams(listOf(
-        "code","aaagmnrs","anagrams","doce","cedo", "ana"
-    ))
-     */
-}
-
-fun possibleAnagram(string: String){
+fun possibleAnagram(string: String) {
     val listado = mutableListOf<String>().also { it.add(string) }
 
     val palabras = string.map { it.toString() }.toMutableList()
@@ -127,11 +92,11 @@ fun possibleAnagram(string: String){
     var letrados = palabras[1]
 
 
-    for (s in string){
+    for (s in string) {
         val str = s.toString()
-        for (i in 0 until palabras.size - 1){
-            palabras[i] = palabras[i+1]
-            palabras[i+1] = str
+        for (i in 0 until palabras.size - 1) {
+            palabras[i] = palabras[i + 1]
+            palabras[i + 1] = str
 
             val word = palabras.joinToString("")
 
@@ -145,8 +110,68 @@ fun possibleAnagram(string: String){
 
 }
 
-fun main() {
-possibleAnagram("puerto")
+fun anagrams(list: List<String>): List<String> {
 
+    val res = list.toMutableList()
+
+    val stack = mutableListOf<String>()
+
+    for (i in 0 until list.size - 1) {
+        var current = list[i].ordenar()
+
+        var next = list[i + 1].ordenar()
+
+        res.add(list.filter { it.ordenar() == list[i].ordenar() }.first())
+
+        if (!stack.contains(list[i]) && stack.filter { it == it.ordenar() }.isNotEmpty()) {
+            stack.add(list[i])
+
+        }
+
+    }
+
+
+//    println(res)
+    println(stack)
+    return emptyList()
+    /*
+    anagrams(listOf("code", "doce", "ecod", "framer", "frame"))
+    anagrams(listOf("aaagmnrs", "code"))
+    anagrams(listOf("code","aaagmnrs","anagrams","doce","cedo", "ana"))
+     */
+}
+
+
+fun anagrams2(string: String = "code aaagmnrs anagrams doce cedo ana"): List<String> {
+
+    val mapa = mutableMapOf(string to string.ordenar())
+
+    val lista = string.split(" ")
+
+    for (str in lista) {
+        if (!mapa.contains(str) && mapa.filterValues { it.ordenar() == str.ordenar() }.isEmpty()) {
+            mapa.put(str, str.ordenar())
+        }
+    }
+
+    println(mapa.toString())
+
+
+
+
+
+    return emptyList()
+}
+
+fun ana(string: String = "code aaagmnrs anagrams doce cedo ana"): List<String>{
+    val listadoReturn = mutableListOf<String>()
+
+    return emptyList()
+}
+
+fun main() {
+    //possibleAnagram("puerto")
+    anagrams(listOf("code", "aaagmnrs", "anagrams", "doce", "cedo", "ana"))
+    anagrams2()
 }
 
